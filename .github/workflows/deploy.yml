@@ -10,16 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy newsletter.html via SSH
-        uses: appleboy/ssh-action@v1
-        with:
-          host:     ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key:      ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cp /tmp/newsletter.html ${{ secrets.DEPLOY_PATH }}/newsletter.html
-            echo "✅ newsletter.html deployed"
-
       - name: Upload newsletter.html to server
         uses: appleboy/scp-action@v0.1.7
         with:
