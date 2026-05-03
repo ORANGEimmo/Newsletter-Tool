@@ -927,7 +927,7 @@ function generateHTML(estates) {
 function renderAndPreview(estates) {
   generatedHTML = generateHTML(estates);
   const iframe = document.getElementById('preview-iframe');
-  // Blob URL statt srcdoc — zuverlässiger in allen Browsern
+  iframe.removeAttribute('srcdoc');
   if (iframe._blobUrl) URL.revokeObjectURL(iframe._blobUrl);
   const blob = new Blob([generatedHTML], { type: 'text/html; charset=utf-8' });
   iframe._blobUrl = URL.createObjectURL(blob);
