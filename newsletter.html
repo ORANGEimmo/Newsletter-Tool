@@ -45,6 +45,20 @@
       font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
       color: var(--gray); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 12px;
     }
+
+    /* Accordion */
+    .accordion { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .accordion-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 12px; cursor: pointer; background: #fafafa;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--gray); user-select: none; transition: background .15s;
+    }
+    .accordion-header:hover { background: #f0f0f0; }
+    .accordion-arrow { font-size: 9px; transition: transform .2s; display: inline-block; }
+    .accordion.open .accordion-arrow { transform: rotate(180deg); }
+    .accordion-body { display: none; padding: 10px 12px 12px; }
+    .accordion.open .accordion-body { display: block; }
     label { display: block; font-size: 11px; color: var(--gray); font-weight: 600; margin-bottom: 3px; margin-top: 8px; }
     label:first-of-type { margin-top: 0; }
     input[type=text], input[type=password], textarea, select {
@@ -138,16 +152,6 @@
   <aside class="sidebar">
     <div class="sidebar-inner">
 
-      <!-- API Zugangsdaten -->
-      <div class="section">
-        <div class="section-label">onOffice API</div>
-        <label>API Token</label>
-        <input type="text" id="api-token" placeholder="onOffice Token">
-        <label>API Secret</label>
-        <input type="password" id="api-secret" placeholder="onOffice Secret">
-        <small>Werden nur lokal im Browser gespeichert.</small>
-      </div>
-
       <!-- Newsletter -->
       <div class="section">
         <div class="section-label">Newsletter</div>
@@ -187,53 +191,60 @@
         <div style="margin-top:14px;">
           <button class="btn btn-primary" id="btn-load" onclick="loadFromAPI()">▶ Aus onOffice laden</button>
           <button class="btn btn-ghost" onclick="loadDemo()">Demo-Daten anzeigen</button>
-          <button class="btn btn-ghost" onclick="testServer()" style="font-size:11px;padding:6px 12px;color:#aaa;">⚙ Server testen</button>
-          <button class="btn btn-ghost" onclick="testOnOfficeAuth()" style="font-size:11px;padding:6px 12px;color:#aaa;">🔑 API-Auth testen</button>
         </div>
         <div class="status" id="status"></div>
       </div>
 
       <!-- Texte anpassen -->
-      <div class="section" id="text-section" style="display:none;">
-        <div class="section-label">Texte anpassen</div>
-        <label id="text-label-0">Hero-Titel</label>
-        <textarea id="text-0" rows="2" placeholder="Titel"></textarea>
-        <label id="text-label-1">Objekt 1 – Titel</label>
-        <input type="text" id="text-1" placeholder="Titel">
-        <label id="text-label-2">Objekt 2 – Titel</label>
-        <input type="text" id="text-2" placeholder="Titel">
-        <label id="text-label-3">Objekt 3 – Titel</label>
-        <input type="text" id="text-3" placeholder="Titel">
-        <label id="text-label-4">Objekt 4 – Titel</label>
-        <input type="text" id="text-4" placeholder="Titel">
+      <div class="accordion" id="text-section" style="display:none;">
+        <div class="accordion-header" onclick="toggleAccordion('text-section')">
+          Texte anpassen <span class="accordion-arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          <label id="text-label-0">Hero-Titel</label>
+          <textarea id="text-0" rows="2" placeholder="Titel"></textarea>
+          <label id="text-label-1">Objekt 1 – Titel</label>
+          <input type="text" id="text-1" placeholder="Titel">
+          <label id="text-label-2">Objekt 2 – Titel</label>
+          <input type="text" id="text-2" placeholder="Titel">
+          <label id="text-label-3">Objekt 3 – Titel</label>
+          <input type="text" id="text-3" placeholder="Titel">
+          <label id="text-label-4">Objekt 4 – Titel</label>
+          <input type="text" id="text-4" placeholder="Titel">
+        </div>
       </div>
 
-      <!-- Links anpassen -->
-      <div class="section" id="link-section" style="display:none;">
-        <div class="section-label">Links anpassen</div>
-        <label id="link-label-0" style="display:none;">Hero – Link</label>
-        <input type="text" id="link-0" placeholder="https://orange-immobilien.de/..." onclick="this.select()" style="display:none;">
-        <label id="link-label-1" style="display:none;">Objekt 1 – Link</label>
-        <input type="text" id="link-1" placeholder="https://orange-immobilien.de/..." onclick="this.select()" style="display:none;">
-        <label id="link-label-2" style="display:none;">Objekt 2 – Link</label>
-        <input type="text" id="link-2" placeholder="https://orange-immobilien.de/..." onclick="this.select()" style="display:none;">
-        <label id="link-label-3" style="display:none;">Objekt 3 – Link</label>
-        <input type="text" id="link-3" placeholder="https://orange-immobilien.de/..." onclick="this.select()" style="display:none;">
-        <label id="link-label-4" style="display:none;">Objekt 4 – Link</label>
-        <input type="text" id="link-4" placeholder="https://orange-immobilien.de/..." onclick="this.select()" style="display:none;">
+      <div class="accordion" id="link-section" style="display:none;">
+        <div class="accordion-header" onclick="toggleAccordion('link-section')">
+          Links anpassen <span class="accordion-arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          <label id="link-label-0" style="display:none;">Hero – Link</label>
+          <input type="text" id="link-0" placeholder="https://orange-immobilien.de/..." onclick="this.select()" style="display:none;">
+          <label id="link-label-1" style="display:none;">Objekt 1 – Link</label>
+          <input type="text" id="link-1" placeholder="https://orange-immobilien.de/..." onclick="this.select()" style="display:none;">
+          <label id="link-label-2" style="display:none;">Objekt 2 – Link</label>
+          <input type="text" id="link-2" placeholder="https://orange-immobilien.de/..." onclick="this.select()" style="display:none;">
+          <label id="link-label-3" style="display:none;">Objekt 3 – Link</label>
+          <input type="text" id="link-3" placeholder="https://orange-immobilien.de/..." onclick="this.select()" style="display:none;">
+          <label id="link-label-4" style="display:none;">Objekt 4 – Link</label>
+          <input type="text" id="link-4" placeholder="https://orange-immobilien.de/..." onclick="this.select()" style="display:none;">
+        </div>
       </div>
 
-      <!-- Bild-URLs (manuell falls API keine Bilder liefert) -->
-      <div class="section" id="img-section" style="display:none;">
-        <div class="section-label">Bild-URLs (optional überschreiben)</div>
-        <label>Hero-Bild</label>
-        <input type="text" id="img-0" placeholder="https://...">
-        <label>Bild 1</label>
-        <input type="text" id="img-1" placeholder="https://...">
-        <label>Bild 2</label>
-        <input type="text" id="img-2" placeholder="https://...">
-        <label>Bild 3</label>
-        <input type="text" id="img-3" placeholder="https://...">
+      <div class="accordion" id="img-section" style="display:none;">
+        <div class="accordion-header" onclick="toggleAccordion('img-section')">
+          Bilder überschreiben <span class="accordion-arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          <label>Hero-Bild</label>
+          <input type="text" id="img-0" placeholder="https://...">
+          <label>Bild 1</label>
+          <input type="text" id="img-1" placeholder="https://...">
+          <label>Bild 2</label>
+          <input type="text" id="img-2" placeholder="https://...">
+          <label>Bild 3</label>
+          <input type="text" id="img-3" placeholder="https://...">
         <label>Bild 4</label>
         <input type="text" id="img-4" placeholder="https://...">
         <button class="btn btn-ghost" style="margin-top:10px;" onclick="refreshPreview()">↺ Vorschau aktualisieren</button>
@@ -264,40 +275,16 @@
 // onOffice API
 // ══════════════════════════════════════════════════════════
 
-// onOffice HMAC v2: base64(raw binary HMAC-SHA256)
-// Message-Reihenfolge: timestamp + token + resourcetype + actionid
-async function computeOnOfficeHmac(secret, timestamp, token, resourcetype, actionid) {
-  const message = String(timestamp) + token + (resourcetype || '') + (actionid || '');
-  const enc = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    'raw', enc.encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-  );
-  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(message));
-  // Base64-kodiert (nicht Hex) — exakt wie im onOffice PHP SDK
-  return btoa(String.fromCharCode(...new Uint8Array(sig)));
-}
-
-async function onOfficeRequest(token, secret, actions) {
-  const ts = Math.floor(Date.now() / 1000);
-
-  // onOffice HMAC v2: pro Action, Reihenfolge: timestamp+token+resourcetype+actionid, base64-kodiert
-  const signedActions = await Promise.all(actions.map(async a => {
-    const hmac = await computeOnOfficeHmac(secret, ts, token, a.resourcetype || '', a.actionid || '');
-    return { ...a, timestamp: ts, hmac, hmac_version: 2 };
-  }));
-
-  const payload = { token, request: { actions: signedActions } };
-
+async function onOfficeRequest(actions) {
   let res;
   try {
     res = await fetch('/api/onoffice', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ actions })
     });
   } catch (networkErr) {
-    throw new Error('Server nicht erreichbar. Starte den Server mit: node newsletter_server.js — dann http://localhost:3001 öffnen. Details: ' + networkErr.message);
+    throw new Error('Server nicht erreichbar. Details: ' + networkErr.message);
   }
 
   if (!res.ok) throw new Error('HTTP ' + res.status + ' – ' + res.statusText);
@@ -439,10 +426,6 @@ let currentEstates = [];
 let generatedHTML = '';
 
 async function loadFromAPI() {
-  const token = document.getElementById('api-token').value.trim();
-  const secret = document.getElementById('api-secret').value.trim();
-  if (!token || !secret) { setStatus('Bitte API Token und Secret eingeben.', 'err'); return; }
-
   const nrs = [0,1,2,3,4].map(i => document.getElementById('obj-'+i).value.trim()).filter(Boolean);
   if (!nrs.length) { setStatus('Bitte mindestens eine Objektnummer eingeben.', 'err'); return; }
 
@@ -453,7 +436,7 @@ async function loadFromAPI() {
     // 1. Suche per objektnr_extern
     setStatus('Suche Objekte (extern) …', 'loading');
     const actions = nrs.map((nr, i) => estateAction(nr, 'e'+i));
-    const result = await onOfficeRequest(token, secret, actions);
+    const result = await onOfficeRequest(actions);
     const results = result.response?.results || [];
 
     // Rohdaten in Konsole für Debugging
@@ -475,7 +458,7 @@ async function loadFromAPI() {
     if (missingNrs.length > 0) {
       setStatus('Suche ' + missingNrs.length + ' Objekte (intern) …', 'loading');
       const fallbackActions = missingNrs.map(m => estateActionByIntern(m.nr, 'f'+m.idx));
-      const fallbackResult = await onOfficeRequest(token, secret, fallbackActions);
+      const fallbackResult = await onOfficeRequest(fallbackActions);
       console.log('[onOffice] Rohantwort intern:', JSON.stringify(fallbackResult, null, 2));
 
       const fbById = {};
@@ -513,7 +496,7 @@ async function loadFromAPI() {
     setStatus('Lade Bilder …', 'loading');
     try {
       const pActions = sortedEstates.map((e, i) => photoAction(e.id, 'p'+i));
-      const pResult = await onOfficeRequest(token, secret, pActions);
+      const pResult = await onOfficeRequest(pActions);
       const pByid = {};
       (pResult.response?.results || []).forEach(r => { pByid[r.identifier] = r; });
 
@@ -558,8 +541,17 @@ function refreshPreview() {
   renderAndPreview(currentEstates);
 }
 
+function toggleAccordion(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function showAccordion(id) {
+  const el = document.getElementById(id);
+  el.style.display = '';
+}
+
 function showImgSection() {
-  document.getElementById('img-section').style.display = 'block';
+  showAccordion('img-section');
 }
 
 function showTextSection(estates) {
@@ -581,7 +573,7 @@ function showTextSection(estates) {
     if (input) input.style.display = 'none';
     if (label) label.style.display = 'none';
   }
-  document.getElementById('text-section').style.display = 'block';
+  showAccordion('text-section');
 }
 
 function showLinkSection(estates) {
@@ -601,7 +593,7 @@ function showLinkSection(estates) {
     if (input) input.style.display = 'none';
     if (label) label.style.display = 'none';
   }
-  document.getElementById('link-section').style.display = 'block';
+  showAccordion('link-section');
 }
 
 // ══════════════════════════════════════════════════════════
@@ -967,66 +959,6 @@ function setStatus(msg, type) {
   el.textContent = msg; el.className = 'status visible ' + type;
 }
 
-async function testServer() {
-  setStatus('Teste Verbindung…', 'loading');
-  try {
-    const r = await fetch('/api/test');
-    const j = await r.json();
-    if (j.ok) setStatus('✓ Server erreichbar auf Port ' + j.port, 'ok');
-    else setStatus('Server antwortet aber meldet Fehler', 'err');
-  } catch(e) {
-    setStatus('✗ Server NICHT erreichbar – läuft newsletter_server.js? Details: ' + e.message, 'err');
-  }
-}
-
-async function testOnOfficeAuth() {
-  const token = document.getElementById('api-token').value.trim();
-  const secret = document.getElementById('api-secret').value.trim();
-  if (!token || !secret) { setStatus('Bitte zuerst API Token und Secret eingeben.', 'err'); return; }
-
-  setStatus('Teste onOffice Auth…', 'loading');
-  try {
-    const ts = Math.floor(Date.now() / 1000);
-    console.log('[Auth-Test] Token:', token.substring(0,8)+'…');
-    console.log('[Auth-Test] Timestamp:', ts);
-    console.log('[Auth-Test] HMAC (first 16):', hmac.substring(0,16)+'…');
-
-    // Minimale Anfrage: lies 1 Objekt ohne Filter
-    const resourcetype = 'estate';
-    const actionid = 'urn:onoffice-de-ns:smart:2.5:smartml:action:read';
-    const actionHmac = await computeOnOfficeHmac(secret, ts, token, resourcetype, actionid);
-    const testAction = {
-      actionid, identifier: 'test', type: 'estate',
-      resourceid: '', resourcetype, cacheable: false,
-      timestamp: ts, hmac: actionHmac, hmac_version: 2,
-      parameters: { data: ['Id','objektnr_extern'], listlimit: 1 }
-    };
-    const payload = { token, request: { actions: [testAction] } };
-
-    const res = await fetch('/api/onoffice', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const json = await res.json();
-    console.log('[Auth-Test] Rohantwort:', JSON.stringify(json, null, 2));
-
-    const topStatus = json?.status;
-    const actionResult = json?.response?.results?.[0];
-    const actionStatus = actionResult?.status;
-    const count = actionResult?.data?.meta?.cntabsolute;
-
-    if (topStatus?.errorcode !== 0) {
-      setStatus('✗ Auth fehlgeschlagen – globaler Fehler ' + topStatus?.errorcode + ': ' + topStatus?.message, 'err');
-    } else if (actionStatus?.errorcode !== 0) {
-      setStatus('✗ Auth OK, aber Action fehlgeschlagen – Code ' + actionStatus?.errorcode + ': ' + actionStatus?.message + '\n(Sieh Console für Raw-Response)', 'err');
-    } else {
-      setStatus('✓ Auth OK! onOffice erreichbar. Objekte im System: ' + (count ?? 'unbekannt'), 'ok');
-    }
-  } catch(e) {
-    setStatus('⚠ Netzwerkfehler: ' + e.message, 'err');
-  }
-}
 
 // Live-Update beim Bearbeiten der Titel
 let textUpdateTimer = null;
@@ -1055,17 +987,9 @@ let linkUpdateTimer = null;
   });
 });
 
-// Saved credentials
 window.addEventListener('load', () => {
-  const t = localStorage.getItem('oo_token');
-  const s = localStorage.getItem('oo_secret');
-  if (t) document.getElementById('api-token').value = t;
-  if (s) document.getElementById('api-secret').value = s;
   loadDemo();
 });
-
-document.getElementById('api-token').addEventListener('change', e => localStorage.setItem('oo_token', e.target.value));
-document.getElementById('api-secret').addEventListener('change', e => localStorage.setItem('oo_secret', e.target.value));
 </script>
 </body>
 </html>
