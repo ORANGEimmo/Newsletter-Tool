@@ -247,8 +247,10 @@
           <input type="text" id="img-3" placeholder="https://...">
         <label>Bild 4</label>
         <input type="text" id="img-4" placeholder="https://...">
-        <button class="btn btn-ghost" style="margin-top:10px;" onclick="refreshPreview()">↺ Vorschau aktualisieren</button>
+        </div>
       </div>
+
+      <button class="btn btn-ghost" id="btn-refresh" style="width:100%;margin-top:4px;display:none;" onclick="refreshPreview()">↺ Vorschau aktualisieren</button>
 
     </div>
   </aside>
@@ -552,6 +554,7 @@ function showAccordion(id) {
 
 function showImgSection() {
   showAccordion('img-section');
+  document.getElementById('btn-refresh').style.display = '';
 }
 
 function showTextSection(estates) {
@@ -988,7 +991,19 @@ let linkUpdateTimer = null;
 });
 
 window.addEventListener('load', () => {
+  // Objektnummern aus localStorage wiederherstellen
+  [0,1,2,3,4].forEach(i => {
+    const saved = localStorage.getItem('oo_obj_' + i);
+    if (saved) document.getElementById('obj-' + i).value = saved;
+  });
   loadDemo();
+});
+
+// Objektnummern bei Eingabe speichern
+[0,1,2,3,4].forEach(i => {
+  document.getElementById('obj-' + i).addEventListener('input', e => {
+    localStorage.setItem('oo_obj_' + i, e.target.value);
+  });
 });
 </script>
 </body>
